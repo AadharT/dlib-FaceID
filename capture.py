@@ -1,6 +1,8 @@
 import cv2
 import face_recognition
 import numpy as np
+import h5py
+
 
 cam = cv2.VideoCapture(0)
 
@@ -30,19 +32,21 @@ while img_counter<5:
         img_name = "known/opencv_frame_{}.png".format(img_counter)
         cv2.imwrite(img_name, frame)
         print("{} written!".format(img_name))
-	
+	#writing name of the person to names.txt
 	text_file.write(person_name + "\n")
-
+	
         #learn to recognize the particular frame and create an array
         frame_face_encoding = face_recognition.face_encodings(frame)[0]
+	
+	#writing generated face encoding to hard disk for later use
+	with h5py.File('known/knownfaces.h5', 'a') as hf:
+		hf.create_dataset("knownfaces",  data=frame_face_encoding)
+
+        #print(frame_face_encoding)
         img_counter += 1
 
 cam.release()
 
 cv2.destroyAllWindows()
-
-#save that array to the hard disk to load later
-#yet to change it so that it saves to HDF5 instead of 
-np.save('known/person1', frame_face_encoding)
 
 text_file.close()

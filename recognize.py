@@ -1,17 +1,19 @@
 import face_recognition
 import cv2
 import numpy as np
+import h5py
 
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
 
 
-# Create arrays of known face encodings and their names
-known_face_encodings = np.load('known/person1.npy')
+#load arrays of known face encodings and their names
+with h5py.File('known/knownfaces.h5', 'r') as hf:
+    known_face_encodings = hf['knownfaces'][:]
 
 #Opening and reading from names.txt
 f = open('known/names.txt', 'r')
-known_face_encodings = f.readlines()
+known_face_names = f.readlines()
 f.close()
 
 
