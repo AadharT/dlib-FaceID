@@ -8,8 +8,10 @@ video_capture = cv2.VideoCapture(0)
 
 
 #load arrays of known face encodings and their names
-with h5py.File('known/knownfaces.h5', 'r') as hf:
-    known_face_encodings = hf['knownfaces'][:]
+#with h5py.File('known/knownfaces.h5', 'r') as hf:
+ #  known_face_encodings = hf['knownfaces'][:]
+
+known_face_encodings = np.load('known/knownfaces.npy')
 
 #Opening and reading from names.txt
 f = open('known/names.txt', 'r')

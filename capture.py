@@ -3,15 +3,17 @@ import face_recognition
 import numpy as np
 import h5py
 
-
+#Take the users name as the input and store it to file names.txt
+person_name = raw_input("Enter your name: ")
+load = np.load('known/knownfaces.npy')
 cam = cv2.VideoCapture(0)
+
 
 cv2.namedWindow("capture")
 
 img_counter = 0
 
-#Take the users name as the input and store it to file names.txt
-person_name = raw_input("Enter your name: ")
+
 
 text_file = open("known/names.txt", "a+")
 
@@ -34,14 +36,17 @@ while img_counter<5:
         print("{} written!".format(img_name))
 	#writing name of the person to names.txt
 	text_file.write(person_name + "\n")
-	
+
         #learn to recognize the particular frame and create an array
         frame_face_encoding = face_recognition.face_encodings(frame)[0]
-	
-	#writing generated face encoding to hard disk for later use
-	with h5py.File('known/knownfaces.h5', 'a') as hf:
-		hf.create_dataset("knownfaces",  data=frame_face_encoding)
 
+	#writing generated face encoding to hard disk for later use
+	#with h5py.File('known/knownfaces.h5', 'a') as hf:
+	#	hf.create_dataset("knownfaces",  data=frame_face_encoding)
+    	data = [np.array(frame_face_encoding)]
+    	
+    	save = np.append(data, load)
+	np.save('known/knownfaces.npy', data)
         #print(frame_face_encoding)
         img_counter += 1
 
