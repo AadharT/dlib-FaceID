@@ -5,7 +5,9 @@ import h5py
 
 #Take the users name as the input and store it to file names.txt
 person_name = raw_input("Enter your name: ")
-load = np.load('known/knownfaces.npy')
+
+
+
 cam = cv2.VideoCapture(0)
 
 
@@ -30,8 +32,10 @@ while img_counter<5:
         print("Escape hit, closing...")
         break
     elif k%256 == 32:
-        # SPACE pressed
-        img_name = "known/opencv_frame_{}.png".format(img_counter)
+	# SPACE pressed
+	load = np.load('known/knownfaces.npy')
+	print (load)
+	img_name = "known/opencv_frame_{}.png".format(img_counter)
         cv2.imwrite(img_name, frame)
         print("{} written!".format(img_name))
 	#writing name of the person to names.txt
@@ -45,9 +49,11 @@ while img_counter<5:
 	#	hf.create_dataset("knownfaces",  data=frame_face_encoding)
     	data = [np.array(frame_face_encoding)]
     	
-    	save = np.append(data, load)
-	np.save('known/knownfaces.npy', data)
-        #print(frame_face_encoding)
+	
+	save = np.concatenate((load, data))
+	
+	np.save('known/knownfaces.npy', save)
+        print(save)
         img_counter += 1
 
 cam.release()
