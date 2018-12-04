@@ -1,41 +1,21 @@
 import face_recognition
 import cv2
 import numpy as np
-#import h5py
 import glob
+
+
 # Get a reference to webcam #0 (the default one)
 video_capture = cv2.VideoCapture(0)
 
-
-#load arrays of known face encodings and their names
-#with h5py.File('known/knownfaces.h5', 'r') as hf:
- #  known_face_encodings = hf['knownfaces'][:]
-#known_face_encodings = np.load('known/aadhar.npy')
-#print (known_face_encodings)
-#known_face_encodings = []
-
+# Load known face names to a dictionary
 numpy_vars = {}
+
 for np_name in glob.glob('known/*.np[yz]'):
     numpy_vars[np_name.strip('known/').strip('.npy')] = np.load(np_name)
-    #known_face_encodings = np.concatenate(numpy_vars[np_name])
 
-#myarray = np.asarray(numpy_vars.values())
-#print(numpy_vars.values())
 known_face_encodings = list(numpy_vars.values())
-#print known_face_encodings
 
-#Opening and reading from names.txt
-# f = open('known/names.txt', 'r')
-# #known_face_names = f.readlines()
-# f.close()
-
-# numpy_vars = { k.replace('.npy', ''): v for k, v in numpy_vars.items() }
-
-print(numpy_vars.keys())
 known_face_names = list(numpy_vars.keys())
-
-#known_face_encodings = numpy_vars.keys()
-
 
 # Initialize some variables
 face_locations = []
